@@ -1,4 +1,5 @@
 import { readFile } from "node:fs";
+import { promisify } from "node:util";
 
 const path = "Puzzles/Day1/input1.txt";
 let input;
@@ -35,9 +36,13 @@ const mapping = {
   nine: 9,
 };
 
-readFile(path, "utf8", (err, data) => {
-  if (err) throw err;
-  input = data.split("\n").map((row) => {
+const readFileAsync = promisify(readFile);
+let data = await readFileAsync(path, "utf-8");
+
+data = data
+  .split("\n")
+  .filter((l) => l)
+  .map((row) => {
     let digitsObject = [];
     words.forEach((w) => {
       if (row.includes(w)) {
@@ -61,10 +66,8 @@ readFile(path, "utf8", (err, data) => {
     return value;
   });
 
-  console.log(input);
-  const sum = input.reduce((acc, a) => acc + a, 0);
-  console.log("sum", sum);
-});
+const sum = data.reduce((acc, a) => acc + a, 0);
+console.log("sum", sum);
 
 function matchDigits(string, substring) {
   const digits = [];

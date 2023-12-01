@@ -1,15 +1,17 @@
 import { readFile } from "node:fs";
+import { promisify } from "node:util";
 
 const path = "Puzzles/Day1/input1.txt";
-let input;
 
-readFile(path, "utf8", (err, data) => {
-  if (err) throw err;
-  input = data.split("\n").map((e) => e.split("").filter((el) => !isNaN(el)));
-  console.log(input);
-  let sum = findSum(input);
-  console.log("sum", sum);
-});
+const readFileAsync = promisify(readFile);
+let data = await readFileAsync(path, "utf-8");
+data = data
+  .split("\n")
+  .filter((l) => l)
+  .map((e) => e.split("").filter((el) => !isNaN(el)));
+
+let sum = findSum(data);
+console.log(sum);
 
 function findSum(input) {
   let sum = 0;
