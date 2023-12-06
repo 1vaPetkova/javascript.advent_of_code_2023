@@ -36,16 +36,16 @@ for (let card of cards) {
   winners.push({ cardNumber: card.cardNumber, matches });
 }
 
-const all = [...winners];
-for (let index = 0; index < all.length; index++) {
-  const matches = all[index].matches;
-  const cardNumber = all[index].cardNumber;
+const cardsCount = winners.length;
+for (let index = 0; index < winners.length; index++) {
+  const matches = winners[index].matches;
+  const cardNumber = winners[index].cardNumber;
   for (let m = 1; m <= matches; m++) {
     const nextIndex = cardNumber - 1 + m;
-    if (nextIndex <= winners.length) {
-      all.push(winners[nextIndex]);
+    if (nextIndex < cardsCount) {
+      winners.push(winners[nextIndex]);
     }
   }
 }
 
-console.log(all.length);
+console.log(winners.length);
